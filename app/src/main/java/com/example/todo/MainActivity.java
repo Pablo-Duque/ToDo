@@ -1,6 +1,4 @@
-package br.edu.ifsp.appdepostagens;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.todo;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -8,10 +6,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.todo.api.ToDoService;
+import com.example.todo.model.ToDo;
+
 import java.util.List;
 
-import br.edu.ifsp.appdepostagens.api.ToDoService;
-import br.edu.ifsp.appdepostagens.model.ToDo;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,9 +49,8 @@ public class MainActivity extends AppCompatActivity {
         try {
             return Integer.parseInt(meuInput.getText().toString());
         } catch (NumberFormatException e) {
-            System.out.println("O texto não é um número válido.");
+            return 0;
         }
-        return 0;
     }
 
     public void recuperarToDo(View view){
@@ -67,10 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
                     for (ToDo todo: listaToDo) {
                         Log.d("resultado", "resultado = " + todo.getUserId() + " / " + todo.getTitle() + " / " + todo.getCompleted()) ;
-                        textResultado.setText(todo.getId() +
-                                " \n " + todo.getUserId() +
-                                " \n " + todo.getTitle() +
-                                " \n " + todo.getCompleted());
                     }
                 }
             }
@@ -84,41 +80,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void recuperarToDoId(View view){
-        Call<List<ToDo>> call = toDoService.recuperarToDoId(getInput());
 
-        call.enqueue(new Callback<List<ToDo>>() {
+        Call<ToDo> call = toDoService.recuperarToDoId(getInput());
+
+        call.enqueue(new Callback<ToDo>() {
             @Override
-            public void onResponse (Call<List<ToDo>> call, Response<List<ToDo>> response) {
+            public void onResponse(Call<ToDo> call, Response<ToDo> response) {
+                if (response.isSuccessful()) {
+                    ToDo todo = response.body();
 
-                if (response.isSuccessful()){
-                    listaToDo = response.body();
-
-                    for (ToDo todo: listaToDo) {
-                        if(Integer.parseInt(todo.getId()) == getInput()) {
-                            Log.d("resultado", "resultado = " + todo.getUserId() + " / " + todo.getTitle() + " / " + todo.getCompleted());
-                            textResultado.setText(todo.getId() +
-                                    " \n " + todo.getUserId() +
-                                    " \n " + todo.getTitle() +
-                                    " \n " + todo.getCompleted());
-                        }
+                    if (todo != null && Integer.parseInt(todo.getId()) == getInput()) {
+                        Log.d("resultado", "resultado = " + todo.getUserId() + " / " + todo.getTitle() + " / " + todo.getCompleted());
+                        textResultado.setText(todo.getId() +
+                                " \n " + todo.getUserId() +
+                                " \n " + todo.getTitle() +
+                                " \n " + todo.getCompleted());
+                    } else {
+                        textResultado.setText("ToDo não encontrado");
                     }
-                }
-                else {
+                } else {
                     textResultado.setText("Erro");
                 }
             }
 
             @Override
-            public void onFailure (Call<List<ToDo>> call, Throwable t) {
-
+            public void onFailure(Call<ToDo> call, Throwable t) {
+                // Aqui você pode tratar falhas, como problemas de rede
+                textResultado.setText("Falha na conexão: " + t.getMessage());
             }
         });
-
     }
+
 
     public void salvarToDo(View view){
 
-        ToDo novoToDo = new ToDo("1234", "Titulo da nova postagem", false);
+        ToDo novoToDo = new ToDo("4321", "Texto novo", false);
 
         Call<ToDo> call = toDoService.salvarToDo(novoToDo);
 
@@ -144,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void atualizarToDo(View view){
 
-        ToDo todo = new ToDo("1234", null, false);
+        ToDo todo = new ToDo("4321", "Texto atualizado muito foda", true);
 
         //Call<Postagem> call = postagemService.atualizarPostagem(1, postagem);
         Call<ToDo> call = toDoService.atualizarToDoPatch(getInput(), todo);

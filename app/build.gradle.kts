@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "br.edu.ifsp.appdepostagens"
+    namespace = "com.example.todo"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "br.edu.ifsp.appdepostagens"
+        applicationId = "com.example.todo"
         minSdk = 29
         targetSdk = 34
         versionCode = 1
@@ -19,10 +19,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     compileOptions {

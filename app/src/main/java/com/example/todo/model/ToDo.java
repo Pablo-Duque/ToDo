@@ -1,4 +1,4 @@
-package br.edu.ifsp.appdepostagens.model;
+package com.example.todo.model;
 
 public class ToDo {
 
@@ -7,10 +7,10 @@ public class ToDo {
     private String title;
     private boolean completed;
 
-    public ToDo(String userId, String title, boolean body) {
+    public ToDo(String userId, String title, boolean completed) {
         this.userId = userId;
         this.title = title;
-        this.completed = body;
+        this.completed = completed;
     }
 
     public String getUserId () {

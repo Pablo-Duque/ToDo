@@ -1,4 +1,4 @@
-package br.edu.ifsp.appdepostagens;
+package com.example.todo;
 
 import android.content.Context;
 
@@ -18,9 +18,9 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
     @Test
-    public void useAppContext () {
+    public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("br.edu.ifsp.appdepostagens", appContext.getPackageName());
+        assertEquals("com.example.todo", appContext.getPackageName());
     }
 }

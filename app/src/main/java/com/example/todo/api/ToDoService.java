@@ -1,8 +1,8 @@
-package br.edu.ifsp.appdepostagens.api;
+package com.example.todo.api;
 
 import java.util.List;
 
-import br.edu.ifsp.appdepostagens.model.ToDo;
+import com.example.todo.model.ToDo;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -18,7 +18,7 @@ public interface ToDoService {
     Call<List<ToDo>> recuperarToDo();
 
     @GET("/todos/{id}")
-    Call<List<ToDo>> recuperarToDoId(@Path("id") int id);
+    Call<ToDo> recuperarToDoId(@Path("id") int id);
 
     @POST("/todos")
     Call<ToDo> salvarToDo(@Body ToDo todo);
